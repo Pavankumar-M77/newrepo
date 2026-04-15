@@ -7,7 +7,6 @@ pipeline {
     }
 
     stages {
-
         stage('Build Java Application') {
             steps {
                 bat 'javac hello.java'
@@ -29,11 +28,13 @@ pipeline {
         stage('Login to DockerHub') {
             steps {
                 withCredentials([usernamePassword(
-                credentialsId: 'dockerc',
-                usernameVariable: 'USER',
-                passwordVariable: 'PASS')]) {
-
-                    bat 'echo %PASS% | docker login -u %USER% --password-stdin'
+                    credentialsId: "${DOCKERHUB_CREDENTIALS}",
+                    usernameVariable: 'USER',
+                    passwordVariable: 'PASS')]) {
+                    
+                    // FIX: No space between %PASS% and |
+                    // The ( ) ensures only the variable content is echoed
+                    bat '(echo %PASS%)| docker login -u %USER% --password-stdin'
                 }
             }
         }
