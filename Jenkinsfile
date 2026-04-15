@@ -34,7 +34,7 @@ pipeline {
                     
                     // FIX: No space between %PASS% and |
                     // The ( ) ensures only the variable content is echoed
-                    bat '(echo %PASS%)| docker login -u %USER% --password-stdin'
+                    bat 'echo %PASS% | docker login -u %USER% --password-stdin'
                 }
             }
         }
